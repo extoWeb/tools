@@ -22,34 +22,15 @@
 			<pre><% data | toLaravelCreate %></pre>
 		</div>
 
+		<div class="form-group">
+			<label>Sonuç(Edit):</label>
+			<pre><% data | toLaravelEdit %></pre>
+		</div>
 
 
 
-		<form class="form-signin">
-	        <h2 class="form-signin-heading">Please sign in</h2>
-	        <label for="inputEmail" class="sr-only">Email address</label>
-	        <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-	        <label for="inputPassword" class="sr-only">Password</label>
-	        <input name="passsword" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-	        <div class="checkbox">
-	          <label>
-	            <input name="rememberme" type="checkbox" value="remember-me"> Remember me
-	          </label>
-	        </div>
 
-	        <div class="form-group">
-	        	<label for="">Choose</label>
-	        	<input name="a" value="item1" type="radio">item1
-	        	<input name="a" value="item2" type="radio">item2
-	        </div>
-	        <select name="role" id="">
-	        	<option value="1">1</option>
-	        	<option value="2">2</option>
-	        	<option value="3">3</option>
-	        </select>
-	        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-
+		
 		
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
@@ -64,22 +45,61 @@
 		    return function (input){
 		       var j = $(input);
 		        $.each(j.find('input[type!=radio]'), function(index, val) {
-		        	 $(this).attr('value','{{ old(\'' + $(this).attr('name') + '\')}}');
+		        	console.log(val);
+		        	types = ['file','checkbox'];
+		        	if( types.indexOf($(this).attr('type')) == -1)
+		        	{
+		        	 	$(this).attr('value','{{ old(\'' + $(this).attr('name') + '\')}}');
+		        	}
 		        }); 
 		        $.each(j.find('select option'), function(index, val) {
-		        	 $(this).attr('etifparantezacdolarelementok'+$(this).parent().attr('name')+'esitesit'+$(this).val()+'parantezkapat_selected_etendif',"###willbedeleted###");
+		        	 $(this).attr('etifparantezacoldparantezactirnak'+ $(this).parent().attr('name')+'tirnakparantezkapatesitesittirnak'+$(this).val()+'tirnakparantezkapat_selected_etendif',"###willbedeleted###");
 		        }); 
 		        $.each(j.find('input[type=radio]'), function(index, val) {
-		        	 $(this).attr('etifparantezacdolarelementok'+$(this).attr('name')+'esitesit'+$(this).val()+'parantezkapat_checked_etendif',"###willbedeleted###");
+		        	 $(this).attr('etifparantezacoldparantezactirnak'+$(this).attr('name')+'tirnakparantezkapatesitesittirnak'+$(this).val()+'tirnakparantezkapat_checked_etendif',"###willbedeleted###");
 		        }); 
 		       	input  = $('<div>').append(j).html();
 		       	input = input.split("=\"###willbedeleted###\"").join('');
 		       	input = input.split("_selected_").join(' selected ');
 		       	input = input.split("_checked_").join(' checked ');
 		       	input = input.split("etendif").join('@endif');
-		       	input = input.split("etifparantezacdolarelementok").join('@if($element->');
+		       	input = input.split("etif").join('@if');
+		       	input = input.split("dolarelementok").join('$element->');
 		       	input = input.split("esitesit").join(' == ');
+		       	input = input.split("tirnak").join('\'');
 		       	input = input.split("parantezkapat").join(')');
+		       	input = input.split("parantezac").join('(');
+		        return input;
+		    }    
+		});
+		app.filter("toLaravelEdit", function () {
+		    return function (input){
+		       var j = $(input);
+		        $.each(j.find('input[type!=radio]'), function(index, val) {
+		        	console.log(val);
+		        	types = ['file','checkbox'];
+		        	if( types.indexOf($(this).attr('type')) == -1)
+		        	{
+		        	 	$(this).attr('value','{{ dolarelementok' + $(this).attr('name') + '}}');
+		        	}
+		        }); 
+		        $.each(j.find('select option'), function(index, val) {
+		        	 $(this).attr('etifparantezacdolarelementok'+ $(this).parent().attr('name')+'sitesittirnak'+$(this).val()+'tirnakparantezkapat_selected_etendif',"###willbedeleted###");
+		        }); 
+		        $.each(j.find('input[type=radio]'), function(index, val) {
+		        	 $(this).attr('etifparantezacdolarelementok'+$(this).attr('name')+'sitesittirnak'+$(this).val()+'tirnakparantezkapat_checked_etendif',"###willbedeleted###");
+		        }); 
+		       	input  = $('<div>').append(j).html();
+		       	input = input.split("=\"###willbedeleted###\"").join('');
+		       	input = input.split("_selected_").join(' selected ');
+		       	input = input.split("_checked_").join(' checked ');
+		       	input = input.split("etendif").join('@endif');
+		       	input = input.split("etif").join('@if');
+		       	input = input.split("dolarelementok").join('$element->');
+		       	input = input.split("esitesit").join(' == ');
+		       	input = input.split("tirnak").join('\'');
+		       	input = input.split("parantezkapat").join(')');
+		       	input = input.split("parantezac").join('(');
 		        return input;
 		    }    
 		});
@@ -89,7 +109,7 @@
 
 		
 		app.controller('formCtrl', ['$scope', function ($scope) {
-			$scope.data = $('form').html();
+			$scope.data = "";
 		}])
 
 

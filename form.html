@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html ng-app="exto">
+<head>
+	<title></title>
+	<!-- Latest compiled and minified CSS & JS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<meta charset="utf8">
+</head>
+<body>
+	<div class="container" ng-controller="formCtrl">
+		<div class>
+			<h3>Form elemanları  <a href="" ng-click="add()"><i class="glyphicon glyphicon-plus"></i></a></h3>
+		</div>
+		<div >
+			<label for="">Trans Dosyası</label>
+			<input type="text" class="form-control" ng-model="trans" value="common">
+		</div>
+		<div >
+			<label for="">Controller Resource Yolu</label>
+			<input type="text" class="form-control" ng-model="resource" value="common">
+			<br>
+		</div>
+		<div class="content well" ng-repeat="(key, value) in inputs">
+			<div class="row">
+				<div class="col-lg-5">Form Adı</div>
+				<div class="col-lg-5">Form Türü</div>
+				<div class="col-lg-2">Eylem</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-5">
+					<input type="text" ng-model="value.name" class="form-control">
+				</div>
+				<div class="col-lg-5">
+					<select ng-model="value.type" id="">
+						<option value="string">string</option>
+						<option value="email">email</option>
+						<option value="password">password</option>
+						<option value="textarea">textarea</option>
+						<option value="file">file</option>
+						<option value="select">select</option>
+					</select>
+				</div>
+				<div class="col-lg-2"><a href="" ng-click="remove(key)"><i class="glyphicon glyphicon-minus"></i></a></div>
+			</div>
+		</div>
+		<div class="result well">
+			<h2>Edit(<% resource %>/edit.blade.php)</h2>
+			<pre>
+&lt;form action="<% resource %>/{{ $element->id }}" method="post"  enctype="multipart/form-data"&gt;
+{{ csrf_field()}}
+{{ method_field('put')}}<div ng-repeat="(key, value) in inputs"><div ng-if="value.type == 'string'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;input  name="<% value.name %>" type="text" id="{{ trans('<% trans %>.<% value.name%>')  }}"  value="{{$element-><% value.name %>)}}"/&gt; 
+&lt;/div&gt;
+</div><div ng-if="value.type == 'email'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;input name="<% value.name %>" type="email" id="{{ trans('<% trans %>.<% value.name%>')  }}"  value="{{$element-><% value.name %>)}}"/&gt; 
+&lt;/div&gt;
+</div><div ng-if="value.type == 'password'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;input name="<% value.name %>" type="password" id="{{ trans('<% trans %>.<% value.name%>')  }}"  value="{{$element-><% value.name %>)}}"/&gt; 
+&lt;/div&gt;
+</div><div ng-if="value.type == 'textarea'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;textarea name="<% value.name %>" id="{{ trans('<% trans %>.<% value.name%>')  }}"  /&gt;{{$element-><% value.name %>)}}&lt;/textarea&gt;
+&lt;/div&gt;
+</div><div ng-if="value.type == 'file'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;input  name="<% value.name %>" type="file" id="{{ trans('<% trans %>.<% value.name%>')  }}"  /&gt; 
+&lt;/div&gt;
+</div><div ng-if="value.type == 'select'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;select name="<% value.name %>" id="{{ trans('<% trans %>.<% value.name%>')  }}"  &gt; 
+	&lt;option @if($element-><% value.name %>) == 1 ) selected @endif value="1" &gt; 1 &lt;/option&gt; 
+	&lt;option @if($element-><% value.name %>) == 2 ) selected @endif value="2" &gt; 2 &lt;/option&gt; 
+	&lt;option @if($element-><% value.name %>) == 3 ) selected @endif value="3" &gt; 3 &lt;/option&gt; 
+	&lt;/select &gt; 
+&lt;/div&gt;
+</div></div>
+&lt;div class="form-group"&gt;
+	&lt;button class="btn btn-success"&gt; {{ trans('common.update')}} &lt;/butto&gt;>
+&lt;/div&gt;
+&lt;/form&gt;
+			</pre>
+		</div>
+		<div class="result well">
+			<h2>Create(<% resource %>/craete.blade.php)</h2>
+			<pre>
+&lt;form action="<% resource %>" method="post"  enctype="multipart/form-data"&gt;
+{{ csrf_field()}}<div ng-repeat="(key, value) in inputs"><div ng-if="value.type == 'string'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;input  name="<% value.name %>" type="text" id="{{ trans('<% trans %>.<% value.name%>')  }}"  value="{{$element-><% value.name %>}}"/&gt; 
+&lt;/div&gt;
+</div><div ng-if="value.type == 'email'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;input name="<% value.name %>" type="email" id="{{ trans('<% trans %>.<% value.name%>')  }}"  value="{{old('<% value.name %>')}}"/&gt; 
+&lt;/div&gt;
+</div><div ng-if="value.type == 'password'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;input name="<% value.name %>" type="password" id="{{ trans('<% trans %>.<% value.name%>')  }}"  value="{{old('<% value.name %>')}}"/&gt; 
+&lt;/div&gt;
+</div><div ng-if="value.type == 'textarea'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;textarea name="<% value.name %>" id="{{ trans('<% trans %>.<% value.name%>')  }}"  /&gt;{{old('<% value.name %>')}}&lt;/textarea&gt;
+&lt;/div&gt;
+</div><div ng-if="value.type == 'file'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;input  name="<% value.name %>" type="file" id="{{ trans('<% trans %>.<% value.name%>')  }}"  /&gt; 
+&lt;/div&gt;
+</div><div ng-if="value.type == 'select'">
+&lt;div class="form-group"&gt;
+	&lt;label for="{{ trans('<% trans %>.<% value.name%>')  }}"&gt; {{ trans('<% trans %>.<% value.name%>')  }} &lt;/label&gt;
+	&lt;select name="<% value.name %>" id="{{ trans('<% trans %>.<% value.name%>')  }}"  &gt; 
+	&lt;option @if(old('<% value.name %>') == 1 ) selected @endif value="1" &gt; 1 &lt;/option&gt; 
+	&lt;option @if(old('<% value.name %>') == 2 ) selected @endif value="2" &gt; 2 &lt;/option&gt; 
+	&lt;option @if(old('<% value.name %>') == 3 ) selected @endif value="3" &gt; 3 &lt;/option&gt; 
+	&lt;/select &gt; 
+&lt;/div&gt;</div></div>
+&lt;div class="form-group"&gt;
+	&lt;button class="btn btn-success"&gt; {{ trans('common.create')}} &lt;/butto&gt;>
+&lt;/div&gt;
+&lt;/form&gt;
+			</pre>
+		</div>
+
+<div class="result well">
+	<h2>Request(<% resource %>Request.php)</h2>
+	<pre>&lt;?php return [<div class="" ng-repeat="(key, value) in inputs">'<% value.name %>' => 'Required<span ng-if="value.type == 'email'">,Email</span>',</div> ];
+	</pre>
+</div>	
+
+<div class="result well">
+	<h2>Trans(<% trans %>.php)</h2>
+	<pre>&lt;?php return [<div class="" ng-repeat="(key, value) in inputs">'<% value.name %>' => '<% value.name | ucwords %>',</div> ];
+	</pre>
+</div>	
+
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+<script>
+	var app = angular.module('exto',[]);
+	app.config(function($interpolateProvider){
+	    $interpolateProvider.startSymbol('<%').endSymbol('%>');
+	});
+	app.filter("ucwords", function () {
+	    return function (input){
+	        if(input) { //when input is defined the apply filter
+	        	input = input.split("_").join(" ");
+	        	input =  input.replace(/(^([a-zA-Z\p{M}]))|([ -][a-zA-Z\p{M}])/g,
+        		function($1){
+            		return $1.toUpperCase();
+        		});
+	        }
+	        return input; 
+	    }    
+	});
+	app.controller('formCtrl', ['$scope', function ($scope) {
+		$scope.inputs = [];
+		$scope.show = 1;
+		$scope.trans="common";
+		$scope.resource = "/common";
+
+		$scope.add = function () {
+			$scope.inputs.push({});
+		}
+
+		$scope.remove = function (i) {
+			$scope.inputs.splice(i,1);
+		}
+	}])
+
+
+	
+</script>
+</body>
+</html>
